@@ -183,7 +183,12 @@ public class SearchController {
                             subject, properties);
 
                     try {
-                        Search search = addQueryResponseToSearch(request, cachedResponse);
+                        Search search;
+                        if (cachedResponse.getHits() == 0) {
+                            search = addQueryResponseToSearch(request, indexResponse);
+                        }else{
+                            search = addQueryResponseToSearch(request, cachedResponse);
+                        }
                         search.updateStatus(sourceId, indexResponse);
                         pushResults(request.getId(),
                                     controller.transform(search, request),
